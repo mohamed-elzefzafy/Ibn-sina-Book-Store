@@ -4,9 +4,8 @@ const mongoose  = require("mongoose");
 
 const autherSchema = new mongoose.Schema({
   name : {
-    type : String ,
-    required : [true , "auther name required"] ,
-  
+type : String ,
+required : [true , "auther name required"] 
   
   } 
 }, {timestamps : true})

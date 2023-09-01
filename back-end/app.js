@@ -1,6 +1,8 @@
 const express = require("express");
 const  mongoose  = require("mongoose");
 const autherRoute = require("./routes/autherRoute");
+const CustomClassError = require("./utils/CustomClassError");
+const globalError = require("./middlewares/errorMiddleware");
 const dotenv = require("dotenv").config({path : "./config.env"});
 const app = express();
 
@@ -16,13 +18,11 @@ app.use(express.json())
 app.use("/api/v1/authers" , autherRoute);
 
 app.all("*" , (req , res , next) => {
-  const error = new Error(`can't find this route ${req.originalUrl}`);
-  next(error.message)
+  // const error = ;
+  next(new CustomClassError(`can't find this route ${req.originalUrl}` , 400))
 })
 // global handling error middleware 
-app.use((err , req , res , next) => {
-  res.status(400).json({error : err});
-})
+app.use(globalError)
 
 
 

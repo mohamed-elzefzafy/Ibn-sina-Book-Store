@@ -1,6 +1,7 @@
 
 const asynchandler = require("express-async-handler");
 const AutherModel = require("../models/autherModel");
+const CustomClassError = require("../utils/CustomClassError");
 
 
 /**
@@ -11,6 +12,10 @@ const AutherModel = require("../models/autherModel");
  */
 exports.createAuther = asynchandler(async (req , res , next) => {
   const auther = await AutherModel.create(req.body);
+  if (!auther) {
+  return next( new CustomClassError("no auther created" , 400))
+  }
+ 
   res.status(201).json({data : auther});
 
 })
@@ -24,7 +29,7 @@ exports.createAuther = asynchandler(async (req , res , next) => {
  */
 exports.getAuthers = asynchandler(async (req , res , next) => {
   const auther = await AutherModel.find();
-  res.status(200).json({data : auther});
+  res.status(200).json({rseult : auther.length , data : auther});
 })
 
 /**
@@ -35,6 +40,9 @@ exports.getAuthers = asynchandler(async (req , res , next) => {
  */
 exports.getOneAuther = asynchandler(async (req , res , next) => {
   const auther = await AutherModel.findById(req.params.id);
+  if (!auther) {
+    return next( new CustomClassError(`no found auther for this Id ${req.params.id}` ));
+  }
   res.status(200).json({data : auther});
 })
 
@@ -46,6 +54,10 @@ exports.getOneAuther = asynchandler(async (req , res , next) => {
  */
 exports.updateAuther = asynchandler(async (req , res , next) => {
   const auther = await AutherModel.findByIdAndUpdate(req.params.id , req.body , {new : true});
+  if (!auther) {
+    return next( new CustomClassError(`no found auther for this Id ${req.params.id}` ));
+    }
+   
   res.status(200).json({data : auther});
 })
 
@@ -58,5 +70,9 @@ exports.updateAuther = asynchandler(async (req , res , next) => {
  */
 exports.deleteAuther = asynchandler(async (req , res , next) => {
   const auther = await AutherModel.findByIdAndDelete(req.params.id );
+
+  if (!auther) {
+    return next( new CustomClassError(`no found auther for this Id ${req.params.id}` ));
+    }
   res.status(200).json({data : "deleted success"});
 })

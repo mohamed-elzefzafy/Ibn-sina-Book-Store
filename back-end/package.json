@@ -4,8 +4,8 @@
   "description": "book store project",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "dev": "node app.js"
+    "dev": "nodemon app.js",
+    "start": "NODE_ENV=production node app.js"
   },
   "author": "M-Zefzafy",
   "license": "ISC",
